@@ -6,7 +6,7 @@ const script = decoder.decode(stdout);
 const stderrText = decoder.decode(stderr);
 console.log(stderrText);
 
-const style = await Deno.readTextFile("style.css");
+const style = await Deno.readTextFile("./src/style.css");
 
 if (success) {
   const html = `
