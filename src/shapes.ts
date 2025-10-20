@@ -5,7 +5,7 @@ import {
   primitives,
   transforms,
 } from "jscad-modeling";
-import { stlSerializer } from "jscad-io";
+import * as stlSerializer from "jscad-stl-serializer";
 import {
   ConstSyntax,
   ModuleSyntax,

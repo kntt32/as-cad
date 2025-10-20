@@ -81,6 +81,10 @@ export class Parser {
       this.parseSymbol("(");
       while (!this.startWithSymbol(")")) {
         params.push(this.parseKeyword());
+        if (this.startWithSymbol(")")) {
+          break;
+        }
+        this.parseSymbol(",");
       }
       this.parseSymbol(")");
     }

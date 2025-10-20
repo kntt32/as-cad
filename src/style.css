@@ -29,7 +29,7 @@
   padding: 16px;
   background: #dddddd;
   border-radius: 50%;
-  box-shadow: 0px 1px 3px #333333;
+  opacity: 80%;
   border: 1px #777777;
 }
 
@@ -44,8 +44,8 @@
   transform: translateX(-50%);
   padding: 16px;
   background: #dddddd;
+  opacity: 80%;
   border-radius: 50%;
-  box-shadow: 0px 1px 3px #333333;
   border: 1px #777777;
 }
 
@@ -60,8 +60,8 @@
   padding: 16px;
   background: #dddddd;
   border-radius: 50%;
-  box-shadow: 0px 1px 3px #333333;
   border: 1px #777777;
+  opacity: 80%;
 }
 
 #infoButton:hover {
@@ -78,7 +78,9 @@
   max-height: 80%;
   overflow: "scroll";
   border-radius: 16px;
+  opacity: 80%;
   border: 1px #777777;
+  backdrop-filter: blur(2px);
 }
 
 #infoView::backdrop {

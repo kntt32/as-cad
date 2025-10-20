@@ -31,7 +31,7 @@ export class ModuleSyntax implements Format {
   }
 
   format(): string {
-    let string = `as ${name}(`;
+    let string = `as ${this.name}(`;
     for (let i = 0; i < this.params.length; i++) {
       if (i != 0) {
         string += ", ";
