@@ -1,0 +1,203 @@
+{
+  "version": "5",
+  "specifiers": {
+    "npm:@jscad/io@2.4.12": "2.4.12",
+    "npm:@jscad/modeling@2.12.6": "2.12.6",
+    "npm:@types/ace@*": "0.0.52",
+    "npm:ace-builds@*": "1.43.4",
+    "npm:three@*": "0.180.0"
+  },
+  "npm": {
+    "@jscad/3mf-serializer@2.1.15": {
+      "integrity": "sha512-9t/5F7gBvf5gVujHWmaX1fMH69AcWkPYgyWfjloh4dbsZZd3E1NSmwE6ZUtIkmuo2ewI/h5HOTZiODbqvEOe4w==",
+      "dependencies": [
+        "@jscad/array-utils",
+        "@jscad/modeling",
+        "fflate",
+        "onml@1.2.0"
+      ]
+    },
+    "@jscad/amf-deserializer@2.3.11": {
+      "integrity": "sha512-cz5LbyEhtVZRghUFVgFC8fcKGskaochfOfzMtRm21c8RbSIlawRM81c4svOAkorA/RIviRuKeWikdzVrZd3fVg==",
+      "dependencies": [
+        "@jscad/io-utils",
+        "@jscad/modeling",
+        "saxes"
+      ]
+    },
+    "@jscad/amf-serializer@2.1.21": {
+      "integrity": "sha512-c2xgKkyz92MDfrt14bsWmA9Kk6s9UMOVLuveM5qBmXoxU1isx+mVik6gxGpK4vX/PT4/bhMFxh46uFQ53HUVMw==",
+      "dependencies": [
+        "@jscad/array-utils",
+        "@jscad/modeling",
+        "onml@1.3.0"
+      ]
+    },
+    "@jscad/array-utils@2.1.4": {
+      "integrity": "sha512-c31r4zSKsE+4Xfwk2V8monDA0hx5G89QGzaakWVUvuGNowYS9WSsYCwHiTIXodjR+HEnDu4okQ7k/whmP0Ne2g=="
+    },
+    "@jscad/dxf-deserializer@2.3.28": {
+      "integrity": "sha512-p4v+AYkPuO7YmXpthEjfa8F8KN2akX4dPlsl4UBNZnLRg58XX4vOwCroEUNTLU2DD6tCGGGZM1gOYqZvMK5N7Q==",
+      "dependencies": [
+        "@jscad/io-utils",
+        "@jscad/modeling"
+      ]
+    },
+    "@jscad/dxf-serializer@2.1.21": {
+      "integrity": "sha512-S7KAxDGtuLLGgW2IMZ+4jfr8SsRgUSSC1rR+C+Wd5I47byrGghy9BcG4UVMCxXVAgWNg+an3J8oKKtOkdixo5g==",
+      "dependencies": [
+        "@jscad/array-utils",
+        "@jscad/modeling"
+      ]
+    },
+    "@jscad/io-utils@2.0.31": {
+      "integrity": "sha512-akalrc72lnzT6hDJH+1rkJA19NsBBXPXiZyyw69cyLtABnFJte2hehTBpkMiuM8BZZ0nQs/LwhhSRHRlCj4b8Q=="
+    },
+    "@jscad/io@2.4.12": {
+      "integrity": "sha512-vRHv/n9FR4BGcGxYBBlmdP67cFzciGlMICQaC/xJB5iT3oxtIkrfhYOa/b/umMMCgEbxXhjtuKxlpce3ZTOz4A==",
+      "dependencies": [
+        "@jscad/3mf-serializer",
+        "@jscad/amf-deserializer",
+        "@jscad/amf-serializer",
+        "@jscad/array-utils",
+        "@jscad/dxf-deserializer",
+        "@jscad/dxf-serializer",
+        "@jscad/io-utils",
+        "@jscad/json-deserializer",
+        "@jscad/json-serializer",
+        "@jscad/modeling",
+        "@jscad/obj-deserializer",
+        "@jscad/obj-serializer",
+        "@jscad/stl-deserializer",
+        "@jscad/stl-serializer",
+        "@jscad/svg-deserializer",
+        "@jscad/svg-serializer",
+        "@jscad/x3d-deserializer",
+        "@jscad/x3d-serializer"
+      ]
+    },
+    "@jscad/json-deserializer@2.0.32": {
+      "integrity": "sha512-6KGPXcI42RUsrAq+wvHPDIVaYg1/kqW4vQ+O8VItoo+AKYGkiHJsfJpk5t+lahZsZx9Zjf6pGkdW5hJg+RRjIg==",
+      "dependencies": [
+        "@jscad/array-utils",
+        "@jscad/io-utils"
+      ]
+    },
+    "@jscad/json-serializer@2.0.31": {
+      "integrity": "sha512-hg6NchgX4gvr2n6JbDAR6ac93t0ezbqLraqEGmdSgu2/MwGVJ30lLWkO8dgqADpDjJuXt/p08fgvHsH14uV6hQ==",
+      "dependencies": [
+        "@jscad/modeling"
+      ]
+    },
+    "@jscad/modeling@2.12.6": {
+      "integrity": "sha512-RyT7hrxuq9UHuBmsC8o+KzimQCY6En2IFiSYPDbSlNFKLFdOc3Kyq9NXpt5+RNQhrhLz6uo15XDtnE43EFF3YQ=="
+    },
+    "@jscad/obj-deserializer@2.0.31": {
+      "integrity": "sha512-U1nATW5uvL7mHGm5vGqD1Z4DFeSllgPruFo3D3hhqr0rq80s4FuYVcf2Mq3vWFsAOsOvMS9JTzF3AJFH8O/kng==",
+      "dependencies": [
+        "@jscad/io-utils",
+        "@jscad/modeling"
+      ]
+    },
+    "@jscad/obj-serializer@2.1.21": {
+      "integrity": "sha512-sPMJR82uUfG2WRrXtAe8lf0vaUDcb4sAp7aJPjO7J0/eu0i4kZR7rOqYjoth2mUPq6wEnTZsG8Bdv6qQIggDtw==",
+      "dependencies": [
+        "@jscad/array-utils",
+        "@jscad/modeling"
+      ]
+    },
+    "@jscad/stl-deserializer@2.1.28": {
+      "integrity": "sha512-gr8w59PuxQA15Q0GW3Z/doKeWkZdtK5HYZHmsigUOXpO+aEyXYxOE3GQrueHRd9Zq4NlEeFesbYMvqtPZElIbQ==",
+      "dependencies": [
+        "@jscad/io-utils",
+        "@jscad/modeling"
+      ]
+    },
+    "@jscad/stl-serializer@2.1.21": {
+      "integrity": "sha512-XHNBCxoMSiimNjL5kmWId1ToWdLYzbNWo2B3LKaxaxMnH0g6qZ36YHqTu5+SUxSARXRyFo/dFuwEwDPQc/vINA==",
+      "dependencies": [
+        "@jscad/array-utils",
+        "@jscad/modeling"
+      ]
+    },
+    "@jscad/svg-deserializer@2.5.12": {
+      "integrity": "sha512-hsszPlQ3/fBbwpqKujlQBviJuTRacIIhlFL5rvrAPUxHeIXYEkevMPF7CjC9Iajy/aw7Xfi/01AyRV9djImrqw==",
+      "dependencies": [
+        "@jscad/array-utils",
+        "@jscad/io-utils",
+        "@jscad/modeling",
+        "saxes"
+      ]
+    },
+    "@jscad/svg-serializer@2.3.19": {
+      "integrity": "sha512-2JQM1My/2PARSs2/XQq7DpMJYRS/IccCqd5SEkKHuqhn8oXsym47tv83bD64IF/cI+4VWqPAwHhyx/Q42lxKZg==",
+      "dependencies": [
+        "@jscad/modeling",
+        "onml@1.3.0"
+      ]
+    },
+    "@jscad/x3d-deserializer@2.2.11": {
+      "integrity": "sha512-aUE8TihwzMqeyEWPU1M69lWJBSC8VWqagYUF+WX3+CpMryeTXNsBQJaK1VZrETSPgJoxvtdSYNSremuTiarxHQ==",
+      "dependencies": [
+        "@jscad/array-utils",
+        "@jscad/io-utils",
+        "@jscad/modeling",
+        "saxes"
+      ]
+    },
+    "@jscad/x3d-serializer@2.4.11": {
+      "integrity": "sha512-L/lOFmzksv/HtkSd9AlKrH2eEQsgP9G3PysOZHrnYsuGafw1PrImmKwGnwGr6SFRkdxGGrwstUDbpra5I3raow==",
+      "dependencies": [
+        "@jscad/array-utils",
+        "@jscad/modeling",
+        "onml@1.3.0"
+      ]
+    },
+    "@types/ace@0.0.52": {
+      "integrity": "sha512-YPF9S7fzpuyrxru+sG/rrTpZkC6gpHBPF14W3x70kqVOD+ks6jkYLapk4yceh36xej7K4HYxcyz9ZDQ2lTvwgQ=="
+    },
+    "ace-builds@1.43.4": {
+      "integrity": "sha512-8hAxVfo2ImICd69BWlZwZlxe9rxDGDjuUhh+WeWgGDvfBCE+r3lkynkQvIovDz4jcMi8O7bsEaFygaDT+h9sBA=="
+    },
+    "fflate@0.7.3": {
+      "integrity": "sha512-0Zz1jOzJWERhyhsimS54VTqOteCNwRtIlh8isdL0AXLo0g7xNTfTL7oWrkmCnPhZGocKIkWHBistBrrpoNH3aw=="
+    },
+    "onml@1.2.0": {
+      "integrity": "sha512-olqYAg18XoHAhm7tK9DdBCOVdts70DGmMgCNLOWyqZokht2utgGSKBB4JHi6pBZpmioAhcYlxK+91L3tsrz+GA==",
+      "dependencies": [
+        "sax"
+      ]
+    },
+    "onml@1.3.0": {
+      "integrity": "sha512-RhGUsC6Im2A5vAdIvxE3auRKTqrqUZQl/AYLn8+9lM3SO4da5bwhcI5TcM+hfQxNCSLLOVErsl9p0ZPjKKmz+g==",
+      "dependencies": [
+        "sax"
+      ]
+    },
+    "sax@1.4.1": {
+      "integrity": "sha512-+aWOz7yVScEGoKNd4PA10LZ8sk0A/z5+nXQG5giUO5rprX9jgYsTdov9qCchZiPIZezbZH+jRut8nPodFAX4Jg=="
+    },
+    "saxes@5.0.1": {
+      "integrity": "sha512-5LBh1Tls8c9xgGjw3QrMwETmTMVk0oFgvrFSvWx62llR2hcEInrKNZ2GZCCuuy2lvWrdl5jhbpeqc5hRYKFOcw==",
+      "dependencies": [
+        "xmlchars"
+      ]
+    },
+    "three@0.180.0": {
+      "integrity": "sha512-o+qycAMZrh+TsE01GqWUxUIKR1AL0S8pq7zDkYOQw8GqfX8b8VoCKYUoHbhiX5j+7hr8XsuHDVU6+gkQJQKg9w=="
+    },
+    "xmlchars@2.2.0": {
+      "integrity": "sha512-JZnDKK8B0RCDw84FNdDAIpZK+JuJw+s7Lz8nksI7SIuU3UXJJslUthsi+uWBUYOwPFwW7W7PRLRfUKpxjtjFCw=="
+    }
+  },
+  "workspace": {
+    "dependencies": [
+      "jsr:@std/assert@^1.0.15",
+      "npm:@jscad/io@2.4.12",
+      "npm:@jscad/modeling@2.12.6",
+      "npm:@types/ace@*",
+      "npm:ace-builds@*",
+      "npm:three@*"
+    ]
+  }
+}

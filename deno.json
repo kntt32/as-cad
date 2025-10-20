@@ -1,0 +1,18 @@
+{
+  "tasks": {
+    "bundle": "deno run --check --allow-write --allow-read --allow-run bundle.ts",
+    "fmt": "deno fmt --ignore=as-cad.html",
+    "clean": "rm as-cad.html"
+  },
+  "compilerOptions": {
+    "lib": ["deno.ns", "dom", "es2023"]
+  },
+  "imports": {
+    "@std/assert": "jsr:@std/assert@^1.0.15",
+    "jscad-modeling": "npm:@jscad/modeling@2.12.6",
+    "jscad-io": "npm:@jscad/io@2.4.12",
+    "ace-builds": "npm:ace-builds",
+    "@types/ace": "npm:@types/ace",
+    "three": "npm:three"
+  }
+}
