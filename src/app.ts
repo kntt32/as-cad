@@ -103,16 +103,29 @@ export default class App {
     const root = unwrap(document.getElementById("root"));
     root.innerHTML = `
         <div class="container">
-          <div id="editor" class="pane">subtract {
+          <div id="editor" class="pane">translate(-20, 0, 0) {
+  subtract {
+    cube(10, 10, 10, true);
+    sphere(6);
+  }
+}
+intersect {
   cube(10, 10, 10, true);
   sphere(6);
+}
+translate(20, 0, 0) {
+  extrude_helical(6.28, 6) {
+    translate(3, 2.5, 0) {
+      circle(2);
+    }
+  }
 }</div>
           <div class="h-divider"></div>
           <div id="preview" class="pane">
             <canvas id="previewCanvas"></canvas>
             <button id="formatButton">
               <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M4 4H20M13 12H20M4 20H20M13 8H20M13 16H20M8 12L4 9V15L8 12Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M4 4H20M13 12H20M4 20H20M13 8H20M13 16H20M8 12L4 9V15L8 12Z" stroke="#000000" stroke-width="2.5" stroke-linejoin="round"/>
 </svg>
             </button>
             <button id="downloadButton">
@@ -130,9 +143,22 @@ export default class App {
           as-cad is a web-based declarative CAD.
           <h2>Example</h2>
           <pre>
-<code>subtract {
+<code>translate(-20, 0, 0) {
+  subtract {
+    cube(10, 10, 10, true);
+    sphere(6);
+  }
+}
+intersect {
   cube(10, 10, 10, true);
   sphere(6);
+}
+translate(20, 0, 0) {
+  extrude_helical(6.28, 6) {
+    translate(3, 2.5, 0) {
+      circle(2);
+    }
+  }
 }</code>
           </pre>
           <h2>Primitive</h2>
@@ -148,13 +174,13 @@ export default class App {
               <li><code>scale(<i>x</i>, <i>y (optional)</i>, <i>z (optional)</i>) {..<i>Solid/Sketch</i>}</code></li>
               <li><code>assemble {..<i>Solid</i>}</code></li>
               <li><code>extrude(<i>height</i>) {..<i>Sketch</i>}</code></li>
-              <li><code>extrude_herical(<i>angle</i>, <i>pitch</i>, <i>segments (optional)</i>) {..<i>Sketch</i>}</code></li>
+              <li><code>extrude_helical(<i>angle</i>, <i>pitch</i>, <i>segments (optional)</i>) {..<i>Sketch</i>}</code></li>
               <li><code>circle(<i>radius</i>, <i>segments (optional)</i>);</code></li>
               <li><code>rect(<i>width</i>, <i>height (optional)</i>);</code></li>
               <li><code>triangle(<i>len1 (optional)</i>, <i>len2 (optional)</i>, <i>len3 (optional)</i>);</code></li>
             </ul>
           <h2>Syntax</h2>
-            <h3>Expand</h3>
+            <h3>Shape</h3>
               <pre><code>cube(10, 10, 10);</code></pre>
             <h3>Module</h3>
               <pre><code>as my_module(x) {
@@ -162,6 +188,11 @@ export default class App {
 }</code></pre>
             <h3>Const</h3>
               <pre><code>const MY_CONST = 123;</code></pre>
+            <h3>Comment</h3>
+              <pre><code>// This is Comment
+/*
+This is comment, too!
+*/</code></pre>
           <div class="sign">build by <a href="https://github.com/kntt32/">kntt32</a></div>
         </div>
         `;

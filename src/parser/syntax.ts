@@ -6,11 +6,9 @@ export interface Format {
 
 export type Syntax =
   | { type: "module"; syntax: ModuleSyntax }
-  | {
-    type: "const";
-    syntax: ConstSyntax;
-  }
-  | { type: "shape"; syntax: ShapeSyntax };
+  | { type: "const"; syntax: ConstSyntax }
+  | { type: "shape"; syntax: ShapeSyntax }
+  | { type: "comment"; syntax: CommentSyntax };
 
 export class ModuleSyntax implements Format {
   offset: Offset;
@@ -109,13 +107,19 @@ export class ShapeSyntax implements Format {
   }
 }
 
-// no longer unused
-export class ImportSyntax {
-  offset: Offset;
-  name: string;
+export class CommentSyntax implements Format {
+  msg: string;
 
-  constructor(offset: Offset, name: string) {
-    this.offset = offset;
-    this.name = name;
+  constructor(msg: string) {
+    this.msg = msg;
+  }
+
+  format(): string {
+    console.log(this.msg);
+    if (this.msg.includes("\n")) {
+      return `/*\n${this.msg}\n*/\n`;
+    } else {
+      return `// ${this.msg}\n`;
+    }
   }
 }

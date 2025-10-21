@@ -1,5 +1,6 @@
 import { Offset, Source } from "./parser/source.ts";
 import {
+  CommentSyntax,
   ConstSyntax,
   ModuleSyntax,
   ShapeSyntax,
@@ -61,6 +62,9 @@ export class Parser {
   }
 
   parseSyntax(): Syntax {
+    if (this.startWithSymbol("//") || this.startWithSymbol("/*")) {
+      return { type: "comment", syntax: this.parseCommentSyntax() };
+    }
     const keyword = this.parseKeyword();
     switch (keyword) {
       case "as":
@@ -140,6 +144,31 @@ export class Parser {
     }
 
     return new ShapeSyntax(offset, name, params, syntaxes);
+  }
+
+  parseCommentSyntax(): CommentSyntax {
+    let comment = "";
+    if (this.startWithSymbol("/*")) {
+      this.parseSymbol("/*");
+      while (this.source.peek(2) != "*/") {
+        const maybeChar = this.source.consume();
+        if (maybeChar == undefined) {
+          break;
+        }
+        comment += maybeChar;
+      }
+      this.parseSymbol("*/");
+    } else {
+      this.parseSymbol("//");
+      while (true) {
+        let maybeChar = this.source.consume();
+        if (maybeChar == undefined || maybeChar == "\n") {
+          break;
+        }
+        comment += maybeChar;
+      }
+    }
+    return new CommentSyntax(comment.trim());
   }
 
   parseKeyword(): string {

@@ -78,7 +78,6 @@
   max-height: 80%;
   overflow: "scroll";
   border-radius: 16px;
-  opacity: 80%;
   border: 1px #777777;
   backdrop-filter: blur(2px);
 }
@@ -124,8 +123,11 @@
   transition: 0.3s;
 }
 
-body {
+#root {
   overflow: hidden;
+}
+
+body {
   font-family: sans-serif;
 }
 
