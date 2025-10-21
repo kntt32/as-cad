@@ -161,7 +161,7 @@ export class Parser {
     } else {
       this.parseSymbol("//");
       while (true) {
-        let maybeChar = this.source.consume();
+        const maybeChar = this.source.consume();
         if (maybeChar == undefined || maybeChar == "\n") {
           break;
         }
