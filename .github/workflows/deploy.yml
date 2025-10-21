@@ -22,6 +22,6 @@ jobs:
           cp as-cad.html out/index.html
           cd out
           git add .
-          git diff --quiet || git commit -m "auto-deployment"
+          git commit -m "auto-deployment"
           git push
           
