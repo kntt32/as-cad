@@ -11,7 +11,7 @@ jobs:
         with:
           deno-version: "2.5.4"
       - name: Check
-        run: deno task check
+        run: deno check
       - name: Bundle
         run: deno task bundle
       - name: Push to kntt32/as-cad-built
