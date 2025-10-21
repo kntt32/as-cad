@@ -9,7 +9,7 @@ jobs:
       - uses: actions/checkout@v5
       - uses: denoland/setup-deno@v2
         with:
-          deno-version: lts
+          deno-version: v2.x
       - name: Check
         run: deno task check
       - name: Bundle
