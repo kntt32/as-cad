@@ -14,3 +14,4 @@ Try here: https://as-cad.pages.dev/
 ```
 deno task bundle
 ```
+Built html file is available in Release Page and (as-cad-built)[https://github.com/kntt32/as-cad-built].
