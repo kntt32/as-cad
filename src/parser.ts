@@ -4,6 +4,7 @@ import {
   ConstSyntax,
   ModuleSyntax,
   ShapeSyntax,
+  ForSyntax,
   Syntax,
 } from "./parser/syntax.ts";
 export * from "./parser/syntax.ts";
@@ -71,6 +72,8 @@ export class Parser {
         return { type: "module", syntax: this.parseModuleSyntax() };
       case "const":
         return { type: "const", syntax: this.parseConstSyntax() };
+      case "for":
+        return {type: "for", syntax: this.parseForSyntax()};
       default:
         return { type: "shape", syntax: this.parseShapeSyntax(keyword) };
     }
@@ -92,7 +95,6 @@ export class Parser {
       }
       this.parseSymbol(")");
     }
-
     const syntaxes: Syntax[] = [];
     if (this.startWithSymbol("{")) {
       this.parseSymbol("{");
@@ -103,7 +105,6 @@ export class Parser {
     } else {
       this.parseSymbol(";");
     }
-
     return new ModuleSyntax(offset, name, params, syntaxes);
   }
 
@@ -118,7 +119,6 @@ export class Parser {
 
   parseShapeSyntax(name: string): ShapeSyntax {
     const offset = this.offset;
-
     const params: string[] = [];
     if (this.startWithSymbol("(")) {
       this.parseSymbol("(");
@@ -131,7 +131,6 @@ export class Parser {
       }
       this.parseSymbol(")");
     }
-
     const syntaxes: Syntax[] = [];
     if (this.startWithSymbol("{")) {
       this.parseSymbol("{");
@@ -142,8 +141,25 @@ export class Parser {
     } else {
       this.parseSymbol(";");
     }
-
     return new ShapeSyntax(offset, name, params, syntaxes);
+  }
+
+  parseForSyntax(): ForSyntax {
+    const offset = this.offset;
+    const constant = this.parseKeyword();
+    if(this.parseKeyword() != "in") {
+      throw new ParseError(this.offset, "expected keyword \"in\"");
+    }
+    const start = this.parseKeyword();
+    this.parseSymbol("..");
+    const end = this.parseKeyword();
+    this.parseSymbol("{");
+    const syntaxes: Syntax[] = [];
+    while(!this.startWithSymbol("}")) {
+      syntaxes.push(this.parseSyntax());
+    }
+    this.parseSymbol("}");
+    return new ForSyntax(offset, constant, start, end, syntaxes);
   }
 
   parseCommentSyntax(): CommentSyntax {

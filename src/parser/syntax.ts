@@ -8,6 +8,7 @@ export type Syntax =
   | { type: "module"; syntax: ModuleSyntax }
   | { type: "const"; syntax: ConstSyntax }
   | { type: "shape"; syntax: ShapeSyntax }
+  | { type: "for"; syntax: ForSyntax }
   | { type: "comment"; syntax: CommentSyntax };
 
 export class ModuleSyntax implements Format {
@@ -107,6 +108,32 @@ export class ShapeSyntax implements Format {
   }
 }
 
+// for i in 0 .. 10
+export class ForSyntax implements Format {
+  offset: Offset;
+  constant: string;
+  start: string;
+  end: string;
+  syntaxes: Syntax[];
+
+  constructor(offset: Offset, constant: string, start: string, end: string, syntaxes: Syntax[]) {
+    this.offset = offset;
+    this.constant = constant;
+    this.start = start;
+    this.end = end;
+    this.syntaxes = syntaxes;
+  }
+
+  format(): string {
+    let string = `for ${this.constant} in ${this.start}..${this.end} {\n`;
+    for(const syntax of this.syntaxes) {
+      string += syntax.syntax.format();
+    }
+    string += "}";
+    return string;
+  }
+}
+
 export class CommentSyntax implements Format {
   msg: string;
 
@@ -123,3 +150,4 @@ export class CommentSyntax implements Format {
     }
   }
 }
+

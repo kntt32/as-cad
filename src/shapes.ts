@@ -7,11 +7,12 @@ import {
 } from "jscad-modeling";
 import * as stlSerializer from "jscad-stl-serializer";
 import {
+  Offset,
   ConstSyntax,
   ModuleSyntax,
-  Offset,
   ParseError,
   ShapeSyntax,
+  ForSyntax,
   Syntax,
 } from "./parser.ts";
 
@@ -535,6 +536,25 @@ export class ShapeBuilder {
     }
   }
 
+  buildFor(forSyntax: ForSyntax): Shape[] {
+    const shapes: Shape[] = [];
+    const constants = new Map(this.constants);
+    const start = this.getValue(forSyntax.start);
+    const end = this.getValue(forSyntax.end);
+    if(start == undefined) {
+      throw new ParseError(forSyntax.offset, `constant ${forSyntax.start} is undefined`);
+    }
+    if(end == undefined) {
+      throw new ParseError(forSyntax.offset, `constant ${forSyntax.end} is undefined`);
+    }
+    for(let i = start; i < end; i++) {
+      constants.set(forSyntax.constant, i);
+      const builder = this.inherit(forSyntax.syntaxes, constants);
+      shapes.push(...builder.build());
+    }
+    return shapes;
+  }
+
   assemble(): Shape {
     const shapes = this.build();
     return new Shape(Offset.root(), "assemble", [], shapes);
@@ -552,6 +572,9 @@ export class ShapeBuilder {
           break;
         case "shape":
           shapes.push(...this.buildShape(syntax.syntax));
+          break;
+        case "for":
+          shapes.push(...this.buildFor(syntax.syntax));
           break;
       }
     }
