@@ -24,4 +24,3 @@ jobs:
           git add .
           git commit --allow-empty -m "auto-deployment"
           git push
-          

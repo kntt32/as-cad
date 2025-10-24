@@ -188,6 +188,12 @@ translate(20, 0, 0) {
 }</code></pre>
             <h3>Const</h3>
               <pre><code>const MY_CONST = 123;</code></pre>
+            <h3>Loop</h3>
+              <pre><code>for(i, 0, 10, 1) {
+  translate(i, i, 0) {
+    cube(i);
+  }
+}</code></pre>
             <h3>Comment</h3>
               <pre><code>// This is Comment
 /*

@@ -108,25 +108,35 @@ export class ShapeSyntax implements Format {
   }
 }
 
-// for i in 0 .. 10
+// for(i, 0, 10, 1) {..}
 export class ForSyntax implements Format {
   offset: Offset;
   constant: string;
   start: string;
   end: string;
+  delta: string;
   syntaxes: Syntax[];
 
-  constructor(offset: Offset, constant: string, start: string, end: string, syntaxes: Syntax[]) {
+  constructor(
+    offset: Offset,
+    constant: string,
+    start: string,
+    end: string,
+    delta: string,
+    syntaxes: Syntax[],
+  ) {
     this.offset = offset;
     this.constant = constant;
     this.start = start;
     this.end = end;
+    this.delta = delta;
     this.syntaxes = syntaxes;
   }
 
   format(): string {
-    let string = `for ${this.constant} in ${this.start}..${this.end} {\n`;
-    for(const syntax of this.syntaxes) {
+    let string =
+      `for(${this.constant}, ${this.start}, ${this.end}, ${this.delta}) {\n`;
+    for (const syntax of this.syntaxes) {
       string += syntax.syntax.format();
     }
     string += "}";
@@ -150,4 +160,3 @@ export class CommentSyntax implements Format {
     }
   }
 }
-

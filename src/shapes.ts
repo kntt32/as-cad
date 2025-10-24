@@ -7,12 +7,12 @@ import {
 } from "jscad-modeling";
 import * as stlSerializer from "jscad-stl-serializer";
 import {
-  Offset,
   ConstSyntax,
+  ForSyntax,
   ModuleSyntax,
+  Offset,
   ParseError,
   ShapeSyntax,
-  ForSyntax,
   Syntax,
 } from "./parser.ts";
 
@@ -541,16 +541,37 @@ export class ShapeBuilder {
     const constants = new Map(this.constants);
     const start = this.getValue(forSyntax.start);
     const end = this.getValue(forSyntax.end);
-    if(start == undefined) {
-      throw new ParseError(forSyntax.offset, `constant ${forSyntax.start} is undefined`);
+    const delta = this.getValue(forSyntax.delta);
+    if (start == undefined) {
+      throw new ParseError(
+        forSyntax.offset,
+        `constant ${forSyntax.start} is undefined`,
+      );
     }
-    if(end == undefined) {
-      throw new ParseError(forSyntax.offset, `constant ${forSyntax.end} is undefined`);
+    if (end == undefined) {
+      throw new ParseError(
+        forSyntax.offset,
+        `constant ${forSyntax.end} is undefined`,
+      );
     }
-    for(let i = start; i < end; i++) {
-      constants.set(forSyntax.constant, i);
-      const builder = this.inherit(forSyntax.syntaxes, constants);
-      shapes.push(...builder.build());
+    if (delta == undefined) {
+      throw new ParseError(
+        forSyntax.offset,
+        `constant ${forSyntax.delta} is undefined`,
+      );
+    }
+    if (0 < delta) {
+      for (let i = start; i < end; i += delta) {
+        constants.set(forSyntax.constant, i);
+        const builder = this.inherit(forSyntax.syntaxes, constants);
+        shapes.push(...builder.build());
+      }
+    } else if (delta < 0) {
+      for (let i = start; end < i; i += delta) {
+        constants.set(forSyntax.constant, i);
+        const builder = this.inherit(forSyntax.syntaxes, constants);
+        shapes.push(...builder.build());
+      }
     }
     return shapes;
   }

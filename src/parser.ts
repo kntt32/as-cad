@@ -2,9 +2,9 @@ import { Offset, Source } from "./parser/source.ts";
 import {
   CommentSyntax,
   ConstSyntax,
+  ForSyntax,
   ModuleSyntax,
   ShapeSyntax,
-  ForSyntax,
   Syntax,
 } from "./parser/syntax.ts";
 export * from "./parser/syntax.ts";
@@ -73,7 +73,7 @@ export class Parser {
       case "const":
         return { type: "const", syntax: this.parseConstSyntax() };
       case "for":
-        return {type: "for", syntax: this.parseForSyntax()};
+        return { type: "for", syntax: this.parseForSyntax() };
       default:
         return { type: "shape", syntax: this.parseShapeSyntax(keyword) };
     }
@@ -146,20 +146,31 @@ export class Parser {
 
   parseForSyntax(): ForSyntax {
     const offset = this.offset;
-    const constant = this.parseKeyword();
-    if(this.parseKeyword() != "in") {
-      throw new ParseError(this.offset, "expected keyword \"in\"");
+    const params: string[] = [];
+    this.parseSymbol("(");
+    for (let i = 0; i < 4; i++) {
+      params.push(this.parseKeyword());
+      if (this.startWithSymbol(")")) {
+        break;
+      }
+      this.parseSymbol(",");
     }
-    const start = this.parseKeyword();
-    this.parseSymbol("..");
-    const end = this.parseKeyword();
-    this.parseSymbol("{");
+    this.parseSymbol(")");
     const syntaxes: Syntax[] = [];
-    while(!this.startWithSymbol("}")) {
-      syntaxes.push(this.parseSyntax());
+    if (this.startWithSymbol("{")) {
+      this.parseSymbol("{");
+      while (!this.startWithSymbol("}")) {
+        syntaxes.push(this.parseSyntax());
+      }
+      this.parseSymbol("}");
+    } else {
+      this.parseSymbol(";");
     }
-    this.parseSymbol("}");
-    return new ForSyntax(offset, constant, start, end, syntaxes);
+    const constant = params[0];
+    const start = params[1];
+    const end = params[2];
+    const delta = params[3];
+    return new ForSyntax(offset, constant, start, end, delta, syntaxes);
   }
 
   parseCommentSyntax(): CommentSyntax {
