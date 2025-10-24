@@ -261,6 +261,8 @@ export class Shape {
         return this.subtractSolid();
       case "translate":
         return this.translateSolid();
+      case "scale":
+        return this.scaleSolid();
       case "rotate":
         return this.rotateSolid();
       case "assemble":
