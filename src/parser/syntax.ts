@@ -135,11 +135,17 @@ export class ForSyntax implements Format {
 
   format(): string {
     let string =
-      `for(${this.constant}, ${this.start}, ${this.end}, ${this.delta}) {\n`;
-    for (const syntax of this.syntaxes) {
-      string += syntax.syntax.format();
+      `for(${this.constant}, ${this.start}, ${this.end}, ${this.delta})`;
+    if (this.syntaxes.length == 0) {
+      string += ";\n";
+    } else {
+      string += " {\n";
+      for (const syntax of this.syntaxes) {
+        string += "  " +
+          syntax.syntax.format().replaceAll("\n", "\n  ").trimEnd() + "\n";
+      }
+      string += "}\n";
     }
-    string += "}";
     return string;
   }
 }
