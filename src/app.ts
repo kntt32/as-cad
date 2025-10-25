@@ -37,8 +37,8 @@ export default class App {
     };
 
     const downloadButton = unwrap(document.getElementById("downloadButton"));
-    downloadButton.onclick = () => {
-      const stl = this.run();
+    downloadButton.onclick = async () => {
+      const stl = await this.run();
       if (stl != undefined) {
         App.downloadFile("main.stl", "application/stl", stl);
       }
@@ -194,6 +194,11 @@ translate(20, 0, 0) {
     cube(i);
   }
 }</code></pre>
+            <h3>Link</h3>
+              <pre><code>link "https://raw.githubusercontent.com/kntt32/as-cad-parts/refs/heads/main/src/gear.acd";
+extrude(5) {
+  gear(10, 0.314, 3.14, -0.2);
+}</code></pre>
             <h3>Comment</h3>
               <pre><code>// This is Comment
 /*
@@ -222,13 +227,13 @@ This is comment, too!
     }
   }
 
-  run(): Uint8Array | undefined {
+  async run(): Promise<Uint8Array | undefined> {
     const text = this.editor.getValue();
     try {
       const source = new Source("main.acd", text);
       const parser = new Parser(source);
       const shapeBuilder = new ShapeBuilder(parser.parse());
-      const shape = shapeBuilder.assemble();
+      const shape = await shapeBuilder.assemble();
       const stl = shape.toStl();
       App.closeError();
       this.renderPreview(stl);

@@ -3,6 +3,7 @@ import {
   CommentSyntax,
   ConstSyntax,
   ForSyntax,
+  LinkSyntax,
   ModuleSyntax,
   ShapeSyntax,
   Syntax,
@@ -74,6 +75,8 @@ export class Parser {
         return { type: "const", syntax: this.parseConstSyntax() };
       case "for":
         return { type: "for", syntax: this.parseForSyntax() };
+      case "link":
+        return { type: "link", syntax: this.parseLinkSyntax() };
       default:
         return { type: "shape", syntax: this.parseShapeSyntax(keyword) };
     }
@@ -173,6 +176,13 @@ export class Parser {
     return new ForSyntax(offset, constant, start, end, delta, syntaxes);
   }
 
+  parseLinkSyntax(): LinkSyntax {
+    const offset = this.offset;
+    const url = new URL(this.parseString());
+    this.parseSymbol(";");
+    return new LinkSyntax(offset, url);
+  }
+
   parseCommentSyntax(): CommentSyntax {
     let comment = "";
     if (this.startWithSymbol("/*")) {
@@ -235,6 +245,20 @@ export class Parser {
     } else {
       throw new ParseError(this.offset, `expected symbol "${symbol}"`);
     }
+  }
+
+  parseString(): string {
+    let string = "";
+    this.parseSymbol('"');
+    while (this.source.peek() != '"') {
+      const maybeChar = this.source.consume();
+      if (maybeChar == undefined) {
+        throw new ParseError(this.offset, `expected symbol "\""`);
+      }
+      string += maybeChar;
+    }
+    this.source.consume();
+    return string;
   }
 }
 

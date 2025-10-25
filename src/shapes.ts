@@ -9,10 +9,13 @@ import * as stlSerializer from "jscad-stl-serializer";
 import {
   ConstSyntax,
   ForSyntax,
+  LinkSyntax,
   ModuleSyntax,
   Offset,
   ParseError,
+  Parser,
   ShapeSyntax,
+  Source,
   Syntax,
 } from "./parser.ts";
 
@@ -403,6 +406,10 @@ export class ShapeBuilder {
   modules: Map<string, ModuleSyntax>;
   parent: ShapeBuilder | undefined;
   currentModule: string | undefined;
+  static links: Map<
+    string,
+    { modules: Map<string, ModuleSyntax>; constants: Map<string, number> }
+  > = new Map();
 
   constructor(
     syntaxes: Syntax[],
@@ -483,10 +490,10 @@ export class ShapeBuilder {
     this.constants.set(constSyntax.name, value);
   }
 
-  private buildModuleShape(
+  private async buildModuleShape(
     moduleSyntax: ModuleSyntax,
     params: number[],
-  ): Shape[] {
+  ): Promise<Shape[]> {
     const moduleConstants: Map<string, number> = new Map();
     if (params.length != moduleSyntax.params.length) {
       throw new ParseError(
@@ -497,14 +504,14 @@ export class ShapeBuilder {
     for (let i = 0; i < params.length; i++) {
       moduleConstants.set(moduleSyntax.params[i], params[i]);
     }
-    return this.inherit(
+    return await this.inherit(
       moduleSyntax.syntaxes,
       moduleConstants,
       moduleSyntax.name,
     ).build();
   }
 
-  private buildShape(shapeSyntax: ShapeSyntax): Shape[] {
+  private async buildShape(shapeSyntax: ShapeSyntax): Promise<Shape[]> {
     const name = shapeSyntax.name;
     const params = shapeSyntax.params.map((value) => {
       const num = this.getValue(value);
@@ -516,7 +523,7 @@ export class ShapeBuilder {
       }
       return num;
     });
-    const shapes = this.inherit(shapeSyntax.syntaxes).build();
+    const shapes = await this.inherit(shapeSyntax.syntaxes).build();
 
     if (Shape.supportedNames.includes(name)) {
       return [new Shape(shapeSyntax.offset, name, params, shapes)];
@@ -534,11 +541,11 @@ export class ShapeBuilder {
           `module "${name} has infinite size`,
         );
       }
-      return this.buildModuleShape(moduleSyntax, params);
+      return await this.buildModuleShape(moduleSyntax, params);
     }
   }
 
-  buildFor(forSyntax: ForSyntax): Shape[] {
+  async buildFor(forSyntax: ForSyntax): Promise<Shape[]> {
     const shapes: Shape[] = [];
     const constants = new Map(this.constants);
     const start = this.getValue(forSyntax.start);
@@ -566,24 +573,58 @@ export class ShapeBuilder {
       for (let i = start; i < end; i += delta) {
         constants.set(forSyntax.constant, i);
         const builder = this.inherit(forSyntax.syntaxes, constants);
-        shapes.push(...builder.build());
+        shapes.push(...await builder.build());
       }
     } else if (delta < 0) {
       for (let i = start; end < i; i += delta) {
         constants.set(forSyntax.constant, i);
         const builder = this.inherit(forSyntax.syntaxes, constants);
-        shapes.push(...builder.build());
+        shapes.push(...await builder.build());
       }
     }
     return shapes;
   }
 
-  assemble(): Shape {
-    const shapes = this.build();
+  async buildLink(syntax: LinkSyntax) {
+    if (!ShapeBuilder.links.has(syntax.url.href)) {
+      let response;
+      try {
+        response = await fetch(syntax.url);
+      } catch {
+        throw new ParseError(syntax.offset, "network error");
+      }
+      const text = await response.text();
+      const source = new Source(syntax.url.href, text);
+      const parser = new Parser(source);
+      const builder = this.inherit(parser.parse());
+      builder.build();
+      ShapeBuilder.links.set(syntax.url.href, {
+        modules: builder.modules,
+        constants: builder.constants,
+      });
+    }
+    for (const [url, { modules, constants }] of ShapeBuilder.links.entries()) {
+      for (const [name, value] of constants.entries()) {
+        this.constants.set(name, value);
+      }
+      for (const [name, module] of modules.entries()) {
+        if (this.modules.has(name)) {
+          throw new ParseError(
+            syntax.offset,
+            `duplicating module "${name}"`,
+          );
+        }
+        this.modules.set(name, module);
+      }
+    }
+  }
+
+  async assemble(): Promise<Shape> {
+    const shapes = await this.build();
     return new Shape(Offset.root(), "assemble", [], shapes);
   }
 
-  build(): Shape[] {
+  async build(): Promise<Shape[]> {
     this.modules = this.enumerateModules();
     const shapes: Shape[] = [];
     for (const syntax of this.syntaxes) {
@@ -594,10 +635,13 @@ export class ShapeBuilder {
           this.buildConst(syntax.syntax);
           break;
         case "shape":
-          shapes.push(...this.buildShape(syntax.syntax));
+          shapes.push(...await this.buildShape(syntax.syntax));
           break;
         case "for":
-          shapes.push(...this.buildFor(syntax.syntax));
+          shapes.push(...await this.buildFor(syntax.syntax));
+          break;
+        case "link":
+          await this.buildLink(syntax.syntax);
           break;
       }
     }

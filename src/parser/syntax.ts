@@ -9,6 +9,7 @@ export type Syntax =
   | { type: "const"; syntax: ConstSyntax }
   | { type: "shape"; syntax: ShapeSyntax }
   | { type: "for"; syntax: ForSyntax }
+  | { type: "link"; syntax: LinkSyntax }
   | { type: "comment"; syntax: CommentSyntax };
 
 export class ModuleSyntax implements Format {
@@ -150,6 +151,20 @@ export class ForSyntax implements Format {
   }
 }
 
+export class LinkSyntax implements Format {
+  offset: Offset;
+  url: URL;
+
+  constructor(offset: Offset, url: URL) {
+    this.offset = offset;
+    this.url = url;
+  }
+
+  format(): string {
+    return `link "${this.url.href}";\n`;
+  }
+}
+
 export class CommentSyntax implements Format {
   msg: string;
 
@@ -158,7 +173,6 @@ export class CommentSyntax implements Format {
   }
 
   format(): string {
-    console.log(this.msg);
     if (this.msg.includes("\n")) {
       return `/*\n${this.msg}\n*/\n`;
     } else {
