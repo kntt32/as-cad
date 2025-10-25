@@ -603,19 +603,18 @@ export class ShapeBuilder {
         constants: builder.constants,
       });
     }
-    for (const [url, { modules, constants }] of ShapeBuilder.links.entries()) {
-      for (const [name, value] of constants.entries()) {
-        this.constants.set(name, value);
+    const {modules, constants} = ShapeBuilder.links.get(syntax.url.href)!;
+    for (const [name, value] of constants.entries()) {
+      this.constants.set(name, value);
+    }
+    for (const [name, module] of modules.entries()) {
+      if (this.modules.has(name)) {
+        throw new ParseError(
+          syntax.offset,
+          `duplicating module "${name}"`,
+        );
       }
-      for (const [name, module] of modules.entries()) {
-        if (this.modules.has(name)) {
-          throw new ParseError(
-            syntax.offset,
-            `duplicating module "${name}"`,
-          );
-        }
-        this.modules.set(name, module);
-      }
+      this.modules.set(name, module);
     }
   }
 
